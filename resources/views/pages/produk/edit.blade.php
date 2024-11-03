@@ -26,7 +26,7 @@
                                     </div>
                                     <div class="mb-3">
                                         <label for="defaultSelect" class="form-label">Satuan</label>
-                                        <select class="form-select mt-1" name="id_satuan">
+                                        <select class="form-select" name="id_satuan">
                                             <option selected disabled>-- Pilih Satuan ---</option>
                                             @foreach ($satuan as $sat)
                                                 <option value="{{ $sat->id_satuan }}"
@@ -37,17 +37,8 @@
                                         </select>
                                     </div>
                                     <div class="mb-3">
-                                        <label class="form-label" for="basic-default-company">Diskon</label>
-                                        <input type="text" class="form-control" name="diskon"
-                                            value="{{ $produk->diskon }}" />
-                                    </div>
-                                </div>
-
-                                <!-- Kolom Kanan -->
-                                <div class="col-md-6">
-                                    <div class="mb-3">
                                         <label for="defaultSelect" class="form-label">Kategori</label>
-                                        <select class="form-select mt-1" name="id_kategori">
+                                        <select class="form-select" name="id_kategori">
                                             <option selected disabled>-- Pilih Kategori ---</option>
                                             @foreach ($kategori as $kat)
                                                 <option value="{{ $kat->id_kategori }}"
@@ -56,6 +47,26 @@
                                                 </option>
                                             @endforeach
                                         </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div>
+                                            <label class="form-label" for="basic-default-company">Gambar Produk</label>
+                                            <div class="mb-3">
+                                                <input class="form-control" type="file" name="gambar" id="gambar-input"
+                                                    onchange="previewImage(event)" />
+                                            </div>
+                                            <img id="preview-image" src="{{ asset('storage/' . $produk->gambar) }}"
+                                                alt="Gambar Produk" width="100">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Kolom Kanan -->
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label" for="basic-default-company">Diskon</label>
+                                        <input type="text" class="form-control" name="diskon"
+                                            value="{{ $produk->diskon }}" />
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label" for="basic-default-company">Harga Beli</label>
@@ -72,9 +83,13 @@
                                         <input type="text" class="form-control" name="stok"
                                             value="{{ $produk->stok }}" />
                                     </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="basic-default-company">Link</label>
+                                        <input type="text" class="form-control" name="link"
+                                            value="{{ $produk->link }}" />
+                                    </div>
                                 </div>
                             </div>
-
                             <div class="row mb-3 py-3">
                                 <div class="col-sm-10">
                                     <a href="/produk" class="btn btn-warning me-2">Kembali</a>
@@ -87,4 +102,13 @@
             </div>
         </div>
     </div>
+    <script>
+        function previewImage(event) {
+            const image = document.getElementById('preview-image');
+            image.src = URL.createObjectURL(event.target.files[0]);
+            image.onload = () => {
+                URL.revokeObjectURL(image.src); // Hapus URL untuk menghemat memori
+            }
+        }
+    </script>
 @endsection

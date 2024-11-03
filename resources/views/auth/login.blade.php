@@ -63,13 +63,6 @@
         </div>
     @endif
 
-    {{-- 
-    @if (session('loginAttemptsLeft'))
-        <div class="alert alert-warning" role="alert">
-            Anda memiliki {{ session('loginAttemptsLeft') }} percobaan login tersisa sebelum akun Anda terblokir.
-        </div>
-    @endif --}}
-
     <div class="container-xxl">
         <div class="authentication-wrapper authentication-basic container-p-y">
             <div class="authentication-inner">
@@ -89,7 +82,7 @@
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
                                 <input type="text" class="form-control" id="email" name="email"
-                                    placeholder="Email" value="{{ old('email') }}" autofocus />
+                                    placeholder="Email" value="{{ old('email') }}" />
                                 @error('email')
                                     <small>{{ $message }}</small>
                                 @enderror

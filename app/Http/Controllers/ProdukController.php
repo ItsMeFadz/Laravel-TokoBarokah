@@ -38,7 +38,7 @@ class ProdukController extends Controller
         ]);
     }
 
-    public function store(request $request)
+    public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'id_kategori' => 'required',
@@ -48,11 +48,14 @@ class ProdukController extends Controller
             'harga_beli' => 'required|integer',
             'diskon' => 'required|integer',
             'harga_jual' => 'required|integer',
-            'stok' => 'required|integer'
+            'stok' => 'required|integer',
+            'link' => 'required',
+            'gambar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ], [
             'required' => 'Kolom :attribute harus diisi.',
             'max' => [
                 'string' => 'Kolom :attribute tidak boleh lebih dari :max karakter.',
+                'file' => 'Kolom :attribute tidak boleh lebih dari :max kilobyte.',
             ],
             'image' => 'Kolom :attribute harus berupa file gambar.',
             'mimes' => 'Kolom :attribute harus memiliki format: :values.',
@@ -68,23 +71,23 @@ class ProdukController extends Controller
 
             $validatedData = $validator->validated();
 
+            if ($request->hasFile('gambar')) {
+                $file = $request->file('gambar');
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $filePath = $file->storeAs('uploads', $fileName, 'public');
+                $validatedData['gambar'] = $filePath;
+            }
+
             ProdukModel::create($validatedData);
 
-            return redirect('/produk')->with('success', 'Data Produk Berhasil Ditambahkan.');
+            return redirect('/produk')->with('success', 'Data Berhasil Ditambahkan.');
         } catch (ValidationException $e) {
-            if ($request->expectsJson()) {
-                return response()->json(['errors' => $e->errors()], 422);
-            }
-
             return redirect()->back()->withErrors($e->errors())->withInput();
         } catch (\Exception $e) {
-            if ($request->expectsJson()) {
-                return response()->json(['error' => 'Gagal menyimpan data. Silakan coba lagi.'], 500);
-            }
-
             return redirect()->back()->with('error', 'Gagal menyimpan data. Silakan coba lagi.');
         }
     }
+
 
 
     public function edit($id)
@@ -116,7 +119,9 @@ class ProdukController extends Controller
             'harga_beli' => 'required|integer',
             'diskon' => 'required|integer',
             'harga_jual' => 'required|integer',
-            'stok' => 'required|integer'
+            'stok' => 'required|integer',
+            'link' => 'required',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Set gambar to nullable
         ], [
             'required' => 'Kolom :attribute harus diisi.',
             'max' => [
@@ -134,12 +139,24 @@ class ProdukController extends Controller
                 throw new ValidationException($validator);
             }
 
-
             $validatedData = $validator->validated();
+
+            // Check if a new image file is uploaded
+            if ($request->hasFile('gambar')) {
+                $file = $request->file('gambar');
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $filePath = $file->storeAs('uploads', $fileName, 'public');
+                $validatedData['gambar'] = $filePath;
+
+                // Delete old image if it exists
+                if ($produk->gambar && file_exists(storage_path('app/public/' . $produk->gambar))) {
+                    unlink(storage_path('app/public/' . $produk->gambar));
+                }
+            }
 
             $produk->update($validatedData);
 
-            return redirect('/produk')->with('success', 'Data produk Berhasil Diperbarui!');
+            return redirect('/produk')->with('success', 'Data produk berhasil diperbarui!');
         } catch (ValidationException $e) {
             if ($request->expectsJson()) {
                 return response()->json(['errors' => $e->errors()], 422);
@@ -154,6 +171,7 @@ class ProdukController extends Controller
             return redirect()->back()->with('error', 'Gagal menyimpan data. Silakan coba lagi.');
         }
     }
+
 
     public function destroy(int $id)
     {

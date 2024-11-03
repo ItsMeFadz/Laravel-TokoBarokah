@@ -4,6 +4,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DetailTransaksiController;
 use App\Http\Controllers\GudangController;
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\LandingController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProdukController;
@@ -39,6 +40,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', [LoginController::class, 'index'])->name('login');
+Route::get('/landing', [LandingController::class, 'index'])->name('landing');
 Route::post('/login-proses', [LoginController::class, 'login_proses'])->name('login_proses');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 

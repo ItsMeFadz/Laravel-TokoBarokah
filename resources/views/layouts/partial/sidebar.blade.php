@@ -50,7 +50,7 @@
         @if (auth()->user()->role == 'admin')
             <li class="menu-item {{ $active === 'Kategori' ? ' active' : '' }}">
                 <a href="/kategori" class="menu-link ">
-                    <i class="menu-icon tf-icons bx bx-package"></i>
+                    <i class="menu-icon tf-icons bx bx-grid-alt"></i>
                     <div data-i18n="Analytics">Kategori</div>
                 </a>
             </li>
