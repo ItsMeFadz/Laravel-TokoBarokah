@@ -1,9 +1,8 @@
 <nav class="navbar navbar-color-on-scroll navbar-transparent    fixed-top  navbar-expand-lg " color-on-scroll="100"
     id="sectionsNav">
     <div class="container">
-        <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-translate">
-            <a class="navbar-brand" href="/landing">Toko Barokah</a>
+            <a class="navbar-brand" href="/">TOKO BAROKAH</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false"
                 aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -11,39 +10,36 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
         </div>
-        <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a href="#pablo" class="nav-link">
-                        Beranda
+                    <a href="#beranda" class="nav-link">
+                        <i class="material-icons mx-2">home</i>Beranda
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#pablo" class="nav-link">
-                        Produk
+                    <a href="#produk" class="nav-link">
+                        <i class="material-icons mx-2">shopping_bag</i>Produk
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#pablo" class="nav-link">
-                        About
+                    <a href="#" class="nav-link">
+                        <i class="material-icons mx-2">error</i>Tentang Kita
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#pablo" class="btn btn-rose btn-raised btn-round " data-toggle="dropdown">
-                        Masuk
+                    <a href="/login" class="nav-link">
+                        <i class="material-icons mx-2">account_circle</i>Masuk
                     </a>
                 </li>
             </ul>
         </div>
-        <!-- /.navbar-collapse -->
     </div>
 </nav>
-
-<nav id="cd-vertical-nav">
+{{-- <nav id="cd-vertical-nav">
     <ul>
         <li>
-            <a href="#buttons" data-number="1">
+            <a href="#produk" data-number="1">
                 <span class="cd-dot"></span>
                 <span class="cd-label">Basic Elements</span>
             </a>
@@ -97,4 +93,4 @@
             </a>
         </li>
     </ul>
-</nav>
+</nav> --}}

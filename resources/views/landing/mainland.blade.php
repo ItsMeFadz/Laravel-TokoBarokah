@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <!-- Favicons -->
     <link rel="apple-touch-icon" href="{{ asset('template/./assetsland/img/kit/pro/apple-icon.png') }}">
-    <link rel="icon" href="{{ asset('template/./assetsland/img/kit/pro/favicon.png') }}">
+    <link rel="icon" href="{{ asset('template/assets/img/favicon/1.png') }}">
     <title>
         Toko Barokah
     </title>
@@ -20,33 +20,46 @@
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link href="{{ asset('template/./assetsland/assets-for-demo/demo.css') }}" rel="stylesheet" />
     <link href="{{ asset('template/./assetsland/assets-for-demo/vertical-nav.css') }}" rel="stylesheet" />
+
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <!-- Animate AOS CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
 </head>
 
-<body class="index-page ">
+<body class="ecommerce ">
     @include('landing.navbar')
-    <div class="page-header header-filter clear-filter" data-parallax="true"
-        style="background-image: url('{{ asset('template/assetsland/img/kit/pro/bgbarokah2.jpg') }}');">
-        <div class="container">
+    <div class="page-header header-filter header-small" data-parallax="true"
+        style="background-image: url('{{ asset('template/assetsland/img/kit/pro/examples/clark-street-merc.jpg') }}');">
+        <div class="container" id="beranda">
             <div class="row">
-                <div class="col-md-8 ml-auto mr-auto">
+                <div class="col-md-8 ml-auto mr-auto text-center">
                     <div class="brand">
-                        <h1>Toko Barokah
-                            <span class="pro-badge">
-                                Pekantingan
-                            </span>
-                        </h1>
-                        <h3 class="title">Menjual Berbagai Macam Perlengkapan Anak</h3>
+                        <h1 class="title animate__animated animate__zoomIn">Toko Barokah</h1>
+                        <h4 class="animate__animated animate__zoomIn">Toko Retail yang menjual berbagai
+                            <b>Perlengkapan Sekolah Anak</b>
+                            <br>
+                            Mulai dari tas, baju, sepatu hingga keperluan sekolah lainnya
+                        </h4>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <div class="main main-raised">
-        <div class="section section-basic">
+        <div class="section">
             @yield('content')
             @include('landing.footer')
         </div>
     </div>
+
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
     <!--   Core JS Files   -->
     <script src="{{ asset('template/./assetsland/js/core/jquery.min.js') }}"></script>
     <script src="{{ asset('template/./assetsland/js/core/popper.min.js') }}"></script>
@@ -74,6 +87,10 @@
     <script src="{{ asset('template/./assetsland/js/material-kit.js?v=2.0.2') }}')}}"></script>
     <!-- Fixed Sidebar Nav - js With initialisations For Demo Purpose, Don't Include it in your project -->
     <script src="{{ asset('template/./assetsland/assets-for-demo/js/material-kit-demo.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Tailwind CSS -->
+    {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
+
     <script>
         $(document).ready(function() {
 
@@ -82,6 +99,74 @@
 
             // Sliders Init
             materialKit.initSliders();
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            var slider2 = document.getElementById('sliderRefine');
+
+            noUiSlider.create(slider2, {
+                start: [10000, 100000],
+                connect: true,
+                range: {
+                    'min': [1000],
+                    'max': [500000]
+                }
+            });
+
+            var limitFieldMin = document.getElementById('price-left');
+            var limitFieldMax = document.getElementById('price-right');
+
+            // Fungsi untuk memformat angka ke dalam format Rupiah
+            function formatRupiah(value) {
+                return 'Rp ' + new Intl.NumberFormat('id-ID').format(value);
+            }
+
+            slider2.noUiSlider.on('update', function(values, handle) {
+                if (handle) {
+                    limitFieldMax.innerHTML = formatRupiah(Math.round(values[handle]));
+                } else {
+                    limitFieldMin.innerHTML = formatRupiah(Math.round(values[handle]));
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            // Toggle navbar transparency on scroll
+            $(window).on("scroll", function() {
+                var scrollDistance = $(window).scrollTop();
+                var navbar = $("#sectionsNav");
+                var colorOnScroll = parseInt(navbar.attr("color-on-scroll"), 10) || 100;
+
+                if (scrollDistance > colorOnScroll) {
+                    navbar.removeClass("navbar-transparent");
+                } else {
+                    navbar.addClass("navbar-transparent");
+                }
+            });
+        });
+        $(document).ready(function() {
+            // Select all links with hashes
+            $('a[href^="#"]').on('click', function(event) {
+                // Prevent default action
+                event.preventDefault();
+
+                // Get the target element
+                var targetId = $(this).attr('href').substring(1);
+                var targetElement = $('#' + targetId);
+
+                // Check if the target element exists
+                if (targetElement.length) {
+                    // Calculate the top position with an offset for the navbar
+                    var targetPosition = targetElement.offset().top - 70;
+
+                    // Smooth scroll to the target position
+                    $('html, body').animate({
+                        scrollTop: targetPosition
+                    }, 800, 'swing'); // 'swing' makes the scroll more natural
+                }
+            });
         });
     </script>
 </body>

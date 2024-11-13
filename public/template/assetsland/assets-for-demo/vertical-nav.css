@@ -41,10 +41,11 @@ Modules - reusable parts of our design
   display: none;
 }
 
-#cd-vertical-nav ul{
-    list-style: none;
-    padding: 0;
+#cd-vertical-nav ul {
+  list-style: none;
+  padding: 0;
 }
+
 #cd-vertical-nav {
   position: fixed;
   right: -78px;
@@ -57,9 +58,11 @@ Modules - reusable parts of our design
   transform: translateY(-50%);
   z-index: 4;
 }
+
 #cd-vertical-nav li {
   text-align: right;
 }
+
 #cd-vertical-nav a {
   display: inline-block;
   /* prevent weird movements on hover when you use a CSS3 transformation - webkit browsers */
@@ -67,11 +70,13 @@ Modules - reusable parts of our design
   backface-visibility: hidden;
   width: 100%;
 }
+
 #cd-vertical-nav a:after {
   content: "";
   display: table;
   clear: both;
 }
+
 #cd-vertical-nav a span {
   float: right;
   display: inline-block;
@@ -81,6 +86,7 @@ Modules - reusable parts of our design
   -o-transform: scale(0.6);
   transform: scale(0.6);
 }
+
 #cd-vertical-nav a:hover span,
 #cd-vertical-nav a.is-selected .cd-dot {
   -webkit-transform: scale(1);
@@ -89,6 +95,7 @@ Modules - reusable parts of our design
   -o-transform: scale(1);
   transform: scale(1);
 }
+
 #cd-vertical-nav a:hover .cd-label {
   opacity: 1;
   left: -100%;
@@ -115,8 +122,9 @@ Modules - reusable parts of our design
   -o-transform-origin: 50% 50%;
   transform-origin: 50% 50%;
 }
+
 #cd-vertical-nav .cd-label {
-    position: relative;
+  position: relative;
   margin-right: 10px;
   padding: 4px 14px;
   color: white;
@@ -146,6 +154,7 @@ Modules - reusable parts of our design
   border-radius: 0.25em;
   background: rgba(255, 255, 255, 0.9);
 }
+
 .touch .cd-nav-trigger span {
   position: absolute;
   height: 4px;
@@ -162,7 +171,9 @@ Modules - reusable parts of our design
   -o-transform: translateX(-50%) translateY(-50%);
   transform: translateX(-50%) translateY(-50%);
 }
-.touch .cd-nav-trigger span::before, .touch .cd-nav-trigger span::after {
+
+.touch .cd-nav-trigger span::before,
+.touch .cd-nav-trigger span::after {
   content: '';
   height: 100%;
   width: 100%;
@@ -171,9 +182,11 @@ Modules - reusable parts of our design
   background-color: inherit;
   border-radius: inherit;
 }
+
 .touch .cd-nav-trigger span::before {
   top: -9px;
 }
+
 .touch .cd-nav-trigger span::after {
   bottom: -9px;
 }
@@ -207,17 +220,21 @@ Modules - reusable parts of our design
   border-radius: 0.25em;
   background-color: rgba(255, 255, 255, 0.9);
 }
+
 .touch #cd-vertical-nav a {
   display: block;
   padding: 1em;
   border-bottom: 1px solid rgba(62, 57, 71, 0.1);
 }
+
 .touch #cd-vertical-nav a span:first-child {
   display: none;
 }
+
 .touch #cd-vertical-nav a.is-selected span:last-child {
   color: #d88683;
 }
+
 .touch #cd-vertical-nav.open {
   -webkit-transform: scale(1);
   -moz-transform: scale(1);
@@ -225,20 +242,25 @@ Modules - reusable parts of our design
   -o-transform: scale(1);
   transform: scale(1);
 }
-.touch #cd-vertical-nav.open + .cd-nav-trigger {
+
+.touch #cd-vertical-nav.open+.cd-nav-trigger {
   background-color: transparent;
 }
-.touch #cd-vertical-nav.open + .cd-nav-trigger span {
+
+.touch #cd-vertical-nav.open+.cd-nav-trigger span {
   background-color: rgba(62, 57, 71, 0);
 }
-.touch #cd-vertical-nav.open + .cd-nav-trigger span::before, .touch #cd-vertical-nav.open + .cd-nav-trigger span::after {
+
+.touch #cd-vertical-nav.open+.cd-nav-trigger span::before,
+.touch #cd-vertical-nav.open+.cd-nav-trigger span::after {
   background-color: #3e3947;
   height: 3px;
   width: 20px;
   border-radius: 0;
   left: -8px;
 }
-.touch #cd-vertical-nav.open + .cd-nav-trigger span::before {
+
+.touch #cd-vertical-nav.open+.cd-nav-trigger span::before {
   -webkit-transform: rotate(45deg);
   -moz-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
@@ -246,7 +268,8 @@ Modules - reusable parts of our design
   transform: rotate(45deg);
   top: 1px;
 }
-.touch #cd-vertical-nav.open + .cd-nav-trigger span::after {
+
+.touch #cd-vertical-nav.open+.cd-nav-trigger span::after {
   -webkit-transform: rotate(135deg);
   -moz-transform: rotate(135deg);
   -ms-transform: rotate(135deg);
@@ -254,12 +277,15 @@ Modules - reusable parts of our design
   transform: rotate(135deg);
   bottom: 0;
 }
+
 .touch #cd-vertical-nav li:last-child a {
   border-bottom: none;
 }
 
 @media only screen and (min-width: 768px) {
-  .touch .cd-nav-trigger, .touch #cd-vertical-nav {
+
+  .touch .cd-nav-trigger,
+  .touch #cd-vertical-nav {
     bottom: 40px;
   }
 }
