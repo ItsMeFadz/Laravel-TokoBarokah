@@ -32,7 +32,12 @@
 <body class="ecommerce ">
     @include('landing.navbar')
     <div class="page-header header-filter header-small" data-parallax="true"
-        style="background-image: url('{{ asset('template/assetsland/img/kit/pro/examples/clark-street-merc.jpg') }}');">
+        style="
+        background-image: url('{{ asset('template/assetsland/img/kit/pro/examples/bg-7.jpg') }}'); 
+        background-position: center 25%;
+        background-size: cover;
+        background-repeat: no-repeat;
+    ">
         <div class="container" id="beranda">
             <div class="row">
                 <div class="col-md-8 ml-auto mr-auto text-center">
@@ -105,12 +110,13 @@
         $(document).ready(function() {
             var slider2 = document.getElementById('sliderRefine');
 
+            // Inisialisasi slider
             noUiSlider.create(slider2, {
-                start: [10000, 100000],
+                start: [10000, 100000], // Nilai awal rentang harga
                 connect: true,
                 range: {
-                    'min': [1000],
-                    'max': [500000]
+                    'min': [1000], // Harga minimum
+                    'max': [500000] // Harga maksimum
                 }
             });
 
@@ -122,6 +128,7 @@
                 return 'Rp ' + new Intl.NumberFormat('id-ID').format(value);
             }
 
+            // Event listener untuk update slider
             slider2.noUiSlider.on('update', function(values, handle) {
                 if (handle) {
                     limitFieldMax.innerHTML = formatRupiah(Math.round(values[handle]));
@@ -129,8 +136,109 @@
                     limitFieldMin.innerHTML = formatRupiah(Math.round(values[handle]));
                 }
             });
+
+            // Event listener untuk perubahan pada slider rentang harga
+            slider2.noUiSlider.on('change', function(values) {
+                let minPrice = Math.round(values[0]); // Harga minimum
+                let maxPrice = Math.round(values[1]); // Harga maksimum
+
+                // Ambil semua kategori yang dipilih
+                let selectedCategories = [];
+                $('.form-check-input:checked').each(function() {
+                    let value = $(this).val();
+                    if (value) {
+                        selectedCategories.push(value);
+                    }
+                });
+
+                // Kirim request AJAX ke server
+                $.ajax({
+                    url: "{{ route('filter.produk') }}", // Ganti dengan route untuk filter produk
+                    method: "POST",
+                    data: {
+                        _token: "{{ csrf_token() }}", // Token CSRF Laravel
+                        categories: selectedCategories,
+                        min_price: minPrice, // Kirim harga minimum
+                        max_price: maxPrice // Kirim harga maksimum
+                    },
+                    success: function(response) {
+                        let productRow = $('.col-md-9 .row');
+                        productRow.fadeOut(200, function() {
+                            productRow.empty();
+                            if (response.produk.length === 0) {
+                                productRow.append(`
+                <div class="features">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="info">
+                                <div class="icon icon-info">
+                                    <i class="material-icons">chat</i>
+                                </div>
+                                <h4 class="info-title">Free Chat</h4>
+                                <p>Divide details about your product or agency work into parts. Write a few lines about each one. A paragraph describing a feature will be enough.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="info">
+                                <div class="icon icon-success">
+                                    <i class="material-icons">verified_user</i>
+                                </div>
+                                <h4 class="info-title">Verified Users</h4>
+                                <p>Divide details about your product or agency work into parts. Write a few lines about each one. A paragraph describing a feature will be enough.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="info">
+                                <div class="icon icon-danger">
+                                    <i class="material-icons">fingerprint</i>
+                                </div>
+                                <h4 class="info-title">Fingerprint</h4>
+                                <p>Divide details about your product or agency work into parts. Write a few lines about each one. A paragraph describing a feature will be enough.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `);
+                            } else {
+                                response.produk.forEach(item => {
+                                    let productCard = `
+                    <div class="col-md-3" data-aos="zoom-in">
+                        <div class="card card-product card-plain no-shadow" data-colored-shadow="false">
+                            <div class="card-header card-header-image">
+                                <a href="#">
+                                    <img src="{{ asset('storage') }}/${item.gambar}" alt="${item.nama_produk}">
+                                </a>
+                            </div>
+                            <div class="card-body">
+                                <a href="#">
+                                    <h4 class="card-title">${item.nama_produk}</h4>
+                                </a>
+                            </div>
+                            <div class="card-footer justify-content-between">
+                                <div class="price-container">
+                                    <span class="price">Rp ${item.harga_jual.toLocaleString('id-ID')}</span>
+                                </div>
+                                <button class="btn btn-rose btn-link btn-fab btn-fab-mini btn-round pull-right"
+                                    rel="tooltip" title="Remove from wishlist" data-placement="left">
+                                    <i class="material-icons">favorite</i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>`;
+                                    productRow.append(productCard);
+                                });
+                            }
+                            productRow.fadeIn(200);
+                        });
+                    },
+                    error: function(error) {
+                        console.error("Error fetching products:", error);
+                    }
+                });
+            });
         });
     </script>
+
     <script>
         $(document).ready(function() {
             // Toggle navbar transparency on scroll
@@ -166,6 +274,87 @@
                         scrollTop: targetPosition
                     }, 800, 'swing'); // 'swing' makes the scroll more natural
                 }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            // Event listener untuk perubahan pada checkbox kategori
+            $('.form-check-input').on('change', function() {
+                // Ambil semua kategori yang dipilih
+                let selectedCategories = [];
+                $('.form-check-input:checked').each(function() {
+                    let value = $(this).val();
+                    if (value) {
+                        selectedCategories.push(value);
+                    }
+                });
+
+                // Kirim request AJAX ke server
+                $.ajax({
+                    url: "{{ route('filter.produk') }}", // Ganti dengan route untuk filter produk
+                    method: "POST",
+                    data: {
+                        _token: "{{ csrf_token() }}", // Token CSRF Laravel
+                        categories: selectedCategories
+                    },
+                    success: function(response) {
+                        let productRow = $('.col-md-9 .row');
+                        productRow.fadeOut(200, function() {
+                            productRow.empty();
+                            if (response.produk.length === 0) {
+                                productRow.append(`
+                <div class="col-md-9">
+                    {{-- <div class="row"> --}}
+                    <div class="row justify-content-center">
+                        <!-- Tambahkan kelas justify-content-center -->
+                        <div class="col-md-9 text-center" data-aos="zoom-in">
+                            <div class="info">
+                                <div class="icon icon-info">
+                                    <i class="material-icons">recycling</i>
+                                </div>
+                                <h4 class="title">Mohon Maaf <br> Produk Saat ini belum tersedia</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `);
+                            } else {
+                                response.produk.forEach(item => {
+                                    let productCard = `
+                    <div class="col-md-3" data-aos="zoom-in">
+                        <div class="card card-product card-plain no-shadow" data-colored-shadow="false">
+                            <div class="card-header card-header-image">
+                                <a href="#">
+                                    <img src="{{ asset('storage') }}/${item.gambar}" alt="${item.nama_produk}">
+                                </a>
+                            </div>
+                            <div class="card-body">
+                                <a href="#">
+                                    <h4 class="card-title">${item.nama_produk}</h4>
+                                </a>
+                            </div>
+                            <div class="card-footer justify-content-between">
+                                <div class="price-container">
+                                    <span class="price">Rp ${item.harga_jual.toLocaleString('id-ID')}</span>
+                                </div>
+                                <button class="btn btn-rose btn-link btn-fab btn-fab-mini btn-round pull-right"
+                                    rel="tooltip" title="Remove from wishlist" data-placement="left">
+                                    <i class="material-icons">favorite</i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>`;
+                                    productRow.append(productCard);
+                                });
+                            }
+                            productRow.fadeIn(200);
+                        });
+                    },
+                    error: function(error) {
+                        console.error("Error fetching products:", error);
+                    }
+                });
             });
         });
     </script>

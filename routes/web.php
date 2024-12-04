@@ -40,6 +40,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', [LandingController::class, 'index'])->name('landing');
+Route::post('/filter-produk', [ProdukController::class, 'filterProduk'])->name('filter.produk');
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login-proses', [LoginController::class, 'login_proses'])->name('login_proses');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');

@@ -211,4 +211,35 @@ class ProdukController extends Controller
             return response()->json(['message' => 'Gagal memperbarui stok produk', 'error' => $e->getMessage()], 500);
         }
     }
+
+
+    public function filterProduk(Request $request)
+    {
+        // Ambil kategori yang dipilih dan rentang harga dari request
+        $categories = $request->categories;
+        $minPrice = $request->min_price;
+        $maxPrice = $request->max_price;
+
+        // Mulai query produk
+        $query = ProdukModel::query();
+
+        // Filter berdasarkan kategori jika ada
+        if (!empty($categories)) {
+            $query->whereIn('id_kategori', $categories);
+        }
+
+        // Filter berdasarkan rentang harga jika ada
+        if (!is_null($minPrice) && !is_null($maxPrice)) {
+            $query->whereBetween('harga_jual', [$minPrice, $maxPrice]);
+        }
+
+        // Dapatkan data produk setelah filter
+        $produk = $query->get();
+
+        // Return data produk dalam format JSON
+        return response()->json(['produk' => $produk]);
+    }
+
+
+
 }

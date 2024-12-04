@@ -54,7 +54,7 @@
                     <div class="card card-refine card-plain card-rose">
                         <div class="card-body">
                             <h4 class="card-title" data-aos="zoom-in">
-                                Reset
+                                Reset Kategori
                                 <button class="btn btn-default btn-fab btn-fab-mini btn-link pull-right" rel="tooltip"
                                     title="" data-original-title="Reset Filter">
                                     <i class="material-icons">cached</i>
@@ -64,8 +64,8 @@
                                 <div class="card card-collapse" data-aos="zoom-in">
                                     <div class="card-header" role="tab" id="headingOne">
                                         <h5 class="mb-0">
-                                            <a data-toggle="collapse" href="#collapseOne" aria-expanded="true"
-                                                aria-controls="collapseOne">
+                                            <a data-toggle="collapse" href="javascript:void(0);" data-target="#collapseOne"
+                                                aria-expanded="true" aria-controls="collapseOne">
                                                 Rentang Harga
                                                 <i class="material-icons">keyboard_arrow_down</i>
                                             </a>
@@ -87,8 +87,9 @@
                                 <div class="card card-collapse" data-aos="zoom-in">
                                     <div class="card-header" role="tab" id="headingTwo">
                                         <h5 class="mb-0">
-                                            <a class="collapsed" data-toggle="collapse" href="#collapseTwo"
-                                                aria-expanded="false" aria-controls="collapseTwo">
+                                            <a class="collapsed" data-toggle="collapse" href="javascript:void(0);"
+                                                data-target="#collapseTwo" aria-expanded="false"
+                                                aria-controls="collapseTwo">
                                                 Kategori
                                                 <i class="material-icons">keyboard_arrow_down</i>
                                             </a>
@@ -129,33 +130,39 @@
                 </div>
                 <div class="col-md-9">
                     <div class="row">
-                        @foreach ($produk as $item)
-                            <div class="col-md-3" data-aos="zoom-in">
-                                <div class="card card-product card-plain no-shadow" data-colored-shadow="false">
-                                    <div class="card-header card-header-image">
-                                        <a href="#">
-                                            <img src="{{ asset('storage/' . $item->gambar) }}"
-                                                alt="{{ $item->nama_produk }}">
-                                        </a>
-                                    </div>
-                                    <div class="card-body">
-                                        <a href="#">
-                                            <h4 class="card-title">{{ $item->nama_produk }}</h4>
-                                        </a>
-                                    </div>
-                                    <div class="card-footer justify-content-between">
-                                        <div class="price-container">
-                                            <span class="price">Rp
-                                                {{ number_format($item->harga_jual, 0, ',', '.') }}</span>
+                        @if ($produk->isEmpty())
+                            <div class="col-12 text-center" data-aos="zoom-in">
+                                <h4 class="text-muted mt-5">Produk tidak tersedia</h4>
+                            </div>
+                        @else
+                            @foreach ($produk as $item)
+                                <div class="col-md-3" data-aos="zoom-in">
+                                    <div class="card card-product card-plain no-shadow" data-colored-shadow="false">
+                                        <div class="card-header card-header-image">
+                                            <a href="#">
+                                                <img src="{{ asset('storage/' . $item->gambar) }}"
+                                                    alt="{{ $item->nama_produk }}">
+                                            </a>
                                         </div>
-                                        <button class="btn btn-rose btn-link btn-fab btn-fab-mini btn-round pull-right"
-                                            rel="tooltip" title="Remove from wishlist" data-placement="left">
-                                            <i class="material-icons">favorite</i>
-                                        </button>
+                                        <div class="card-body">
+                                            <a href="#">
+                                                <h4 class="card-title">{{ $item->nama_produk }}</h4>
+                                            </a>
+                                        </div>
+                                        <div class="card-footer justify-content-between">
+                                            <div class="price-container">
+                                                <span class="price">Rp
+                                                    {{ number_format($item->harga_jual, 0, ',', '.') }}</span>
+                                            </div>
+                                            <button class="btn btn-rose btn-link btn-fab btn-fab-mini btn-round pull-right"
+                                                rel="tooltip" title="Remove from wishlist" data-placement="left">
+                                                <i class="material-icons">favorite</i>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        @endforeach
+                            @endforeach
+                        @endif
                     </div>
                 </div>
             </div>
